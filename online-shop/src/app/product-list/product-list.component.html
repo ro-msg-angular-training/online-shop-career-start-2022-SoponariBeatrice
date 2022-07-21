@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <nav>
+      <button [routerLink]="'/cart'" routerLinkActive="active" ariaCurrentWhenActive="page" > Go to chart </button>
+      <button color="primary" [routerLink]="'/add-product'" routerLinkActive="active" ariaCurrentWhenActive="page" >Add new product</button>
+        </nav>  
+      <h1><strong>List of products:</strong> </h1>
+        <ul *ngIf="products$ | async as products$ else noData">
+            <li *ngFor="let product of products$">
+                <p> Name: {{product.name}}</p>
+                <nav>
+                    <button [routerLink]="'/product-details/'+product.id" routerLinkActive="active" ariaCurrentWhenActive="page" >Details</button>
+                </nav>
+                <router-outlet></router-outlet>
+            </li> 
+        </ul>
+        <ng-template #noData>No Data Available</ng-template>
+       
+    </body>
+</html>
+     
+
+
+
+
+
+

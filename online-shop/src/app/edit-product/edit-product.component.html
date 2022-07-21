@@ -1,0 +1,27 @@
+<form [formGroup] = "myForm">
+    
+    <mat-form-field>
+        <input matInput placeholder="name" formControlName="name">
+        <mat-error *ngIf="name?.invalid && name?.touched">
+            Name is required
+        </mat-error>
+    </mat-form-field>
+    
+    <mat-form-field>
+        <input matInput name = "price" placeholder="price" formControlName="price">
+        <mat-error *ngIf="price?.errors && price?.touched">
+            The price must contain only digits
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput name ="category" placeholder="category" formControlName="category">
+        <mat-error *ngIf="category?.invalid && category?.touched">
+            The category must contain only letters
+        </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button [disabled]="myForm.invalid" color="primary" (click)="editProduct()"> Edit product</button>
+    <button mat-raised-button  color="primary" (click)="cancel()">Cancel</button>
+
+</form>

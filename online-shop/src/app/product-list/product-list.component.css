@@ -1,0 +1,14 @@
+p{
+    font-size: 14px;
+    color: navy;
+}
+
+body{
+    padding-left: 2%;
+    padding-top: 2%;
+}
+
+button{
+    background-color:  aquamarine;
+    color: crimson;
+}
