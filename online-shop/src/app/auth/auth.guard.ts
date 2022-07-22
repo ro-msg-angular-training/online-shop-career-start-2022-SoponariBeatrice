@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { LoginService } from '../service/LoginService';
+import { RoutesEnum } from '../routes.enum';
+import { LoginService } from '../service/login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +17,8 @@ export class AuthGuard implements CanActivate {
       if (this.service.checkRole('customer')) {
         return true;
       } else {
-        console.log("cicicici")
         this.service.redirectUrl = state.url;
-        return this.router.parseUrl('/log-in');
+        return this.router.parseUrl(RoutesEnum.Login);
       }
     }
   }

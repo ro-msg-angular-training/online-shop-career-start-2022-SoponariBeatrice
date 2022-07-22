@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { random } from 'lodash';
+import { Observable, Subscription } from 'rxjs';
 import { IProduct } from '../IProduct';
-import { ProductService } from '../service/productService';
+import { ProductService } from '../service/product.service';
 
 @Component({
   selector: 'app-add-product-form',
@@ -14,7 +15,7 @@ export class AddProductFormComponent implements OnInit {
 
   myForm: FormGroup;
   product : IProduct;
-
+  productSubscription : Subscription;
   constructor(private fb: FormBuilder, private productService: ProductService) { }
 
   ngOnInit(): void {
@@ -43,13 +44,18 @@ export class AddProductFormComponent implements OnInit {
   get category(){
     return this.myForm.get('category');
   }
- 
+  
   addProduct(){
     this.product = {name: this.myForm.value.name,
                     category: this.myForm.value.category,
                     price: this.myForm.value.price,
                     id : random()};
-    this.productService.addProduct(this.product).subscribe(() => alert("Product added succesfully"));
+    this.productSubscription = this.productService.addProduct(this.product).subscribe(() => alert("Product added succesfully"));
+  }
+
+  ngOnDestroy(){
+    if(this.productSubscription !== undefined)
+      this.productSubscription.unsubscribe();
   }
 
 }

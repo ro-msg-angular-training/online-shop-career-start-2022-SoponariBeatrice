@@ -1,9 +1,9 @@
 import { Observable, of } from "rxjs";
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
-import { IProduct } from "./IProduct";
-import { IProductWrapper } from "./IProductWrapper";
-
+import { IProduct } from "../IProduct";
+import { IProductWrapper } from "../IProductWrapper";
+import { environment } from "src/environments/environment";
 
 @Injectable({
     providedIn: 'root'
@@ -11,8 +11,6 @@ import { IProductWrapper } from "./IProductWrapper";
 
 export class CartService {
     cart : IProductWrapper[] = [];
-    readonly ROOT_URL = "http://localhost:3000/products";
-
     constructor( private httpService: HttpClient){
     }
 
@@ -31,8 +29,8 @@ export class CartService {
         return this.cart
     }
 
-    checkout(){
-        return this.httpService.post(this.ROOT_URL + "/" + "orders" , this.getCart(), { responseType: 'text' });
+    checkout():Observable<String>{
+        return this.httpService.post(environment.orderUrl, this.getCart(), { responseType: 'text' });
     }
 
     getProductFromCart(id: number){
@@ -42,12 +40,8 @@ export class CartService {
     increaseQuantity(id: number)
     {
         let newProduct = this.cart.find( p => p.productId == id);
-        if(newProduct == undefined)
-            return 0;
-        else{
+        if(newProduct !== undefined)
             newProduct.quantity++;
-            return 1;
-        }
     }
     
 }

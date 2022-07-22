@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { IProduct } from '../IProduct';
-import { ProductService } from '../service/productService';
+import { ProductService } from '../service/product.service';
 
 @Component({
   selector: 'app-edit-product',
@@ -11,8 +12,9 @@ import { ProductService } from '../service/productService';
 })
 export class EditProductComponent implements OnInit {
   myForm: FormGroup;
-  id: string | null;
+  id: string ;
   product : IProduct;
+  productSubscription : Subscription;
   constructor(private fb: FormBuilder, private productService: ProductService,private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -43,17 +45,21 @@ export class EditProductComponent implements OnInit {
   }
 
   editProduct(){
-    this.id = this.route.snapshot.paramMap.get("id");
+    this.id = this.route.snapshot.paramMap.get("id") ?? "";
     this.product ={name : this.myForm?.value.name,
                    id: Number(this.id), 
                   category: this.myForm?.value.category,
                   price: this.myForm.value.price  } 
     this.product.category = this.category?.getRawValue();
-    console.log(this.product.id)
-    this.productService.editProduct(this.product,Number(this.id)).subscribe(() => alert("Changes saved"));
+    this.productSubscription = this.productService.editProduct(this.product,parseInt(this.id)).subscribe(() => alert("Changes saved"));
     
   }
   cancel(){
      this.myForm.reset() 
+  }
+
+  ngOnDestroy(){
+    if(this.productSubscription !== undefined)
+       this.productSubscription.unsubscribe();
   }
 }

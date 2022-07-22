@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +9,10 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent {
 
-  title = 'online-shop';
-  readonly ROOT_URL = 'http://localhost:3000/products';
   posts: any;
   constructor(private http: HttpClient){}
 
-  getPosts2(){
-    this.posts = this.http.get(this.ROOT_URL)
+  getPosts(){
+    this.posts = this.http.get(environment.productsUrl)
   }
 }

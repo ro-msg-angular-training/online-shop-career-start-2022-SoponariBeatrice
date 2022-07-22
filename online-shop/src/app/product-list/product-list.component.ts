@@ -1,12 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, Pipe } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { elementAt, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { __values } from 'tslib';
 import * as _ from 'lodash';
 import { IProduct } from '../IProduct';
-import { ProductService } from '../service/productService';
-import { RouterModule } from '@angular/router';
+import { ProductService } from '../service/product.service';
+
 
 @Component({
   selector: 'app-product-list',

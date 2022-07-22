@@ -1,12 +1,11 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable } from 'rxjs';
-import { CartService } from '../CartService';
+import { ActivatedRoute} from '@angular/router';
+import { Subscription } from 'rxjs';
+import { CartService } from '../service/cart.service';
 import { IProduct } from '../IProduct';
 
 import { IProductWrapper } from '../IProductWrapper';
-import { ProductService } from '../service/productService';
+import { ProductService } from '../service/product.service';
 
 interface Product {
   id: number,
@@ -33,6 +32,7 @@ export class ProductDetailsComponent implements OnInit {
   product: Product;
   prodW: IProductWrapper;
  currentProductInfo: IProductWrapper;
+ productSubscriptions : Subscription[] = [];
  constructor(private route: ActivatedRoute, private  service: ProductService, private cartService : CartService){ }
 
   ngOnInit() {
@@ -41,21 +41,26 @@ export class ProductDetailsComponent implements OnInit {
   }
   deleteProduct(){
     this.id = this.route.snapshot.paramMap.get("id");
-    this.service.deleteProductById(this.id).subscribe(() => alert("Product deleted succesfully!"))
+    this.productSubscriptions.push(this.service.deleteProductById(this.id).subscribe(() => alert("Product deleted succesfully!")));
   }
  
   addToCart(){
     this.id = this.route.snapshot.paramMap.get("id");
-    this.service.getProductById(this.id).subscribe(data => this.product = data);
+    this.productSubscriptions.push(this.service.getProductById(this.id).subscribe(data => this.product = data));
     this.fromProdToProdWrapper(this.product);
     this.cartService.addToCart(this.prodW);
   }
 
   fromProdToProdWrapper(prod : IProduct)
   { 
-    
       this.prodW = {productId: prod.id, quantity: 1};
-      
+  }
+
+  ngOnDestroy(){
+    this.productSubscriptions.forEach(element => {
+      if(element !== undefined)  
+        element.unsubscribe();
+    });
   }
   
 }
