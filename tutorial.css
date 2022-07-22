@@ -1,0 +1,30 @@
+p {
+    color: red;
+    font-family: arial, helvetica, sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.5em;
+    word-spacing: 2em;
+    line-height: 1.5;
+    text-align: center;
+}
+
+a {
+    color: blue;
+}
+
+body {
+    font-size: 14px;
+    color: navy;
+    font-family: arial, helvetica, sans-serif;
+    font-size: 14px;
+}
+
+h1 {
+    color: yellow;
+    background-color: blue;
+    border-style: dashed;
+    border-width: 3px;
+    border-left-width: 10px;
+    border-right-width: 10px;
+    border-color: red;
+}

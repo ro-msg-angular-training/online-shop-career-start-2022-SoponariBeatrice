@@ -1,0 +1,14 @@
+<form [formGroup] = "myForm">
+    
+    <mat-form-field>
+        <input matInput placeholder="username" formControlName="username" placeholder="username" formControlName="username">
+    </mat-form-field>
+
+    <br>
+    <mat-form-field>
+        <input matInput type="password" name ="password" placeholder="password" formControlName="password">
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="primary" (click)="login()">Login </button>
+    
+</form>
