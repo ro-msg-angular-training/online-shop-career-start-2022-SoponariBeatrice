@@ -26,7 +26,7 @@ export class ProductService{
         return this.http.put(environment.productsUrl + "/" + id, product);
     }
 
-    addProduct(product: IProduct): Observable<any>{
+    addProduct(product: any): Observable<any>{
         return this.http.post(environment.productsUrl, product);
     }
 }

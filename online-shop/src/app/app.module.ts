@@ -4,10 +4,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CompComponent } from './comp/comp.component';
 import { ProductListComponent } from './product-list/product-list.component';
-import { RouterModule, Routes } from '@angular/router'
+import { Routes } from '@angular/router'
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import {HttpClientModule} from '@angular/common/http'
-import { ProductService } from './service/product.service';
+
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+
+
 import { ReactiveFormsModule } from '@angular/forms';
 import { CartComponent } from './cart/cart.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,6 +25,10 @@ import {MatChipsModule} from '@angular/material/chips';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { AddProductFormComponent } from './add-product-form/add-product-form.component';
 import { LoginComponent } from './login/login.component';
+import { productReducer } from './store/reducers/product.reducer';
+import { ProductEffect } from './store/effects/product.effect';
+import { cartReducer } from './store/reducers/cart.reducer';
+import { OrderEffects } from './store/effects/cart.effect';
 
 const routes: Routes = [{path: 'log-in', component: LoginComponent},
                         { path: 'product-list', component: ProductListComponent},
@@ -49,7 +59,13 @@ const routes: Routes = [{path: 'log-in', component: LoginComponent},
     MatSelectModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatChipsModule
+    MatChipsModule,
+    StoreModule.forRoot({ products: productReducer,
+      cart: cartReducer },{}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25
+    }),
+    EffectsModule.forRoot([ProductEffect, OrderEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent]

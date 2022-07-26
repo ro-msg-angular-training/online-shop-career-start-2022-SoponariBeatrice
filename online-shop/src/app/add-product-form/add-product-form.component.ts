@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { random } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
 import { IProduct } from '../IProduct';
 import { ProductService } from '../service/product.service';
+import { addProduct } from '../store/actions/product.action';
+import { AppState } from '../store/state/app.state';
 
 @Component({
   selector: 'app-add-product-form',
@@ -16,7 +19,9 @@ export class AddProductFormComponent implements OnInit {
   myForm: FormGroup;
   product : IProduct;
   productSubscription : Subscription;
-  constructor(private fb: FormBuilder, private productService: ProductService) { }
+  
+
+  constructor(private fb: FormBuilder, private productService: ProductService, private store: Store<AppState> ) { }
 
   ngOnInit(): void {
 
@@ -50,7 +55,12 @@ export class AddProductFormComponent implements OnInit {
                     category: this.myForm.value.category,
                     price: this.myForm.value.price,
                     id : random()};
-    this.productSubscription = this.productService.addProduct(this.product).subscribe(() => alert("Product added succesfully"));
+    //this.productSubscription = this.productService.addProduct(this.product).subscribe(() => alert("Product added succesfully"));
+    this.store.dispatch(addProduct({product : this.product}));
+    this.product = {name: '',
+      category: '',
+      price: -1,
+      id : -1};
   }
 
   ngOnDestroy(){

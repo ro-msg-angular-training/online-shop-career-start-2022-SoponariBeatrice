@@ -6,8 +6,8 @@
       <button color="primary" [routerLink]="'/add-product'" routerLinkActive="active" ariaCurrentWhenActive="page" >Add new product</button>
         </nav>  
       <h1><strong>List of products:</strong> </h1>
-        <ul *ngIf="products$ | async as products$ else noData">
-            <li *ngFor="let product of products$">
+       <ul>
+            <li *ngFor="let product of products">
                 <p> Name: {{product.name}}</p>
                 <nav>
                     <button [routerLink]="'/product-details/'+product.id" routerLinkActive="active" ariaCurrentWhenActive="page" >Details</button>

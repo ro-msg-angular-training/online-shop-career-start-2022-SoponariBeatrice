@@ -6,6 +6,13 @@ import { IProduct } from '../IProduct';
 
 import { IProductWrapper } from '../IProductWrapper';
 import { ProductService } from '../service/product.service';
+import { AppModule } from '../app.module';
+import { Store } from '@ngrx/store';
+import { selectOneProduct } from '../store/selectors/product.selector';
+import { AppState } from '../store/state/app.state';
+import { deleteProduct, getProductById } from '../store/actions/product.action';
+import { addToCart } from '../store/actions/cart.action';
+import { selectAllCart } from '../store/selectors/cart.selector';
 
 interface Product {
   id: number,
@@ -28,27 +35,33 @@ export interface Prod{
 
 export class ProductDetailsComponent implements OnInit {
   currentProduct: Prod = {productId : -1, quantity: -1};
-  id: string | null;
-  product: Product;
+  id: number;
+  product: IProduct;
   prodW: IProductWrapper;
- currentProductInfo: IProductWrapper;
- productSubscriptions : Subscription[] = [];
- constructor(private route: ActivatedRoute, private  service: ProductService, private cartService : CartService){ }
+  currentProductInfo: IProductWrapper;
+  productSubscriptions : Subscription[] = [];
+  public product$ = this.store.select(selectOneProduct);
+  public cart$ = this.storeCart.select(selectAllCart);
+  constructor(private route: ActivatedRoute, private  service: ProductService, private cartService : CartService, private store: Store<AppState>, private storeCart: Store<AppState>){ }
 
   ngOnInit() {
-      this.id = this.route.snapshot.paramMap.get("id");
-      this.service.getProductById(this.id).subscribe((product)=> this.product=product)
+      this.id = this.route.snapshot.params['id'];
+      this.store.dispatch(getProductById({id: this.id}));
+      this.product$.subscribe((data) => {
+        if(data != undefined)
+        this.product = data
+      })
   }
   deleteProduct(){
-    this.id = this.route.snapshot.paramMap.get("id");
-    this.productSubscriptions.push(this.service.deleteProductById(this.id).subscribe(() => alert("Product deleted succesfully!")));
+    this.store.dispatch(deleteProduct({id : this.id}))
   }
  
   addToCart(){
-    this.id = this.route.snapshot.paramMap.get("id");
-    this.productSubscriptions.push(this.service.getProductById(this.id).subscribe(data => this.product = data));
-    this.fromProdToProdWrapper(this.product);
-    this.cartService.addToCart(this.prodW);
+     
+     this.fromProdToProdWrapper(this.product);
+     this.storeCart.dispatch(addToCart({product : this.prodW}));
+     alert("Added");
+     
   }
 
   fromProdToProdWrapper(prod : IProduct)
