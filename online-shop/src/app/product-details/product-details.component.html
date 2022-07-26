@@ -9,9 +9,9 @@
         <p>
             Price: {{product.price}}
         </p> 
-        <button (click) = "deleteProduct()"> Delete </button>
-        <button (click) = "addToCart()"> Add to chart </button>
-        <button [routerLink]="'/edit-product/'+product.id" routerLinkActive="active" ariaCurrentWhenActive="page"> Edit </button>
+        <button mat-raised-button color="primary" (click) = "deleteProduct()"> Delete </button>
+        <button  mat-raised-button color="primary" (click) = "addToCart()"> Add to chart </button>
+        <button  mat-raised-button color="primary" [routerLink]="'/edit-product/'+product.id" routerLinkActive="active" ariaCurrentWhenActive="page"> Edit </button>
         
         <router-outlet></router-outlet>
     </div>

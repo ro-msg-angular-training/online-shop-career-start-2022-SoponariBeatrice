@@ -1,26 +1,42 @@
-<!DOCTYPE html>
-<html>
-    <body>
-        <nav>
-      <button [routerLink]="'/cart'" routerLinkActive="active" ariaCurrentWhenActive="page" > Go to chart </button>
-      <button color="primary" [routerLink]="'/add-product'" routerLinkActive="active" ariaCurrentWhenActive="page" >Add new product</button>
-        </nav>  
-      <h1><strong>List of products:</strong> </h1>
-        <ul *ngIf="products$ | async as products$ else noData">
-            <li *ngFor="let product of products$">
-                <p> Name: {{product.name}}</p>
-                <nav>
-                    <button [routerLink]="'/product-details/'+product.id" routerLinkActive="active" ariaCurrentWhenActive="page" >Details</button>
-                </nav>
-                <router-outlet></router-outlet>
-            </li> 
-        </ul>
-        <ng-template #noData>No Data Available</ng-template>
+<nav>
+        <button mat-raised-button color="primary" [routerLink]="'/cart'" routerLinkActive="active" ariaCurrentWhenActive="page" > Go to chart </button>
+        <button mat-raised-button color="primary" [routerLink]="'/add-product'" routerLinkActive="active" ariaCurrentWhenActive="page" >Add new product</button>
+</nav>  
+  <div class="container">
+    <table mat-table [dataSource]="dataSource">
+        
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef>Category</th>
+            <td mat-cell *matCellDef="let element"> {{ element.category }} </td>
+          </ng-container>
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef>Price</th>
+            <td mat-cell *matCellDef="let element"> {{ element.price }} </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="id">
+            <th  mat-header-cell *matHeaderCellDef> Details</th>
+            <td mat-cell *matCellDef="let element" >
+                 <button mat-raised-button color="primary" [routerLink]="'/product-details/' + element.id" routerLinkActive="active" ariaCurrentWhenActive="page" >Details</button>
+            </td>
+          </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columndefs"></tr>
+        <tr mat-row *matRowDef="let row; columns: columndefs;"></tr>
+        
        
-    </body>
-</html>
+      </table>
      
-
+    </div>
+    <!-- <nav>
+        <button [routerLink]="'/product-details/'+product.id" routerLinkActive="active" ariaCurrentWhenActive="page" >Details</button>
+    </nav> -->
+     <!-- <router-outlet></router-outlet> -->
+    
 
 
 
