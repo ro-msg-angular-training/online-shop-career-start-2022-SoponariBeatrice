@@ -16,14 +16,14 @@ import { loadProducts } from '../store/actions/product.action';
 })
 
 export class ProductListComponent implements OnInit {
-  products: IProduct[]
+  dataSource: any[]
   public allProducts$ = this.store.select(selectAllProducts);
-
-  constructor(private service: ProductService, private store: Store<AppState> ){}
+  columndefs : any[] = ['name','category', 'price','id'];
+  constructor(private store: Store<AppState> ){}
   ngOnInit() {
 
     this.store.dispatch(loadProducts());
-    this.allProducts$.subscribe((data) => {this.products = data})
+    this.allProducts$.subscribe((data) => {this.dataSource = data})
 
   }
  

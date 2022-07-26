@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { IProduct } from '../IProduct';
 import { ProductService } from '../service/product.service';
+import { updateProduct } from '../store/actions/product.action';
+import { AppState } from '../store/state/app.state';
 
 @Component({
   selector: 'app-edit-product',
@@ -15,7 +18,7 @@ export class EditProductComponent implements OnInit {
   id: string ;
   product : IProduct;
   productSubscription : Subscription;
-  constructor(private fb: FormBuilder, private productService: ProductService,private route: ActivatedRoute) { }
+  constructor(private fb: FormBuilder,private route: ActivatedRoute, private store: Store<AppState>) { }
 
   ngOnInit(): void {
 
@@ -51,8 +54,8 @@ export class EditProductComponent implements OnInit {
                   category: this.myForm?.value.category,
                   price: this.myForm.value.price  } 
     this.product.category = this.category?.getRawValue();
-    this.productSubscription = this.productService.editProduct(this.product,parseInt(this.id)).subscribe(() => alert("Changes saved"));
-    
+    this.store.dispatch(updateProduct({product : this.product, id: parseInt(this.id)}));
+    alert("Changes saved");
   }
   cancel(){
      this.myForm.reset() 

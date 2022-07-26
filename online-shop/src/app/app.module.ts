@@ -29,6 +29,8 @@ import { productReducer } from './store/reducers/product.reducer';
 import { ProductEffect } from './store/effects/product.effect';
 import { cartReducer } from './store/reducers/cart.reducer';
 import { OrderEffects } from './store/effects/cart.effect';
+import { loginReducer } from './store/reducers/login.reducer';
+import { MatTableModule } from '@angular/material/table'
 
 const routes: Routes = [{path: 'log-in', component: LoginComponent},
                         { path: 'product-list', component: ProductListComponent},
@@ -60,12 +62,13 @@ const routes: Routes = [{path: 'log-in', component: LoginComponent},
     MatButtonModule,
     MatCheckboxModule,
     MatChipsModule,
+    MatTableModule,
     StoreModule.forRoot({ products: productReducer,
-      cart: cartReducer },{}),
+      cart: cartReducer, login: loginReducer },{}),
     StoreDevtoolsModule.instrument({
       maxAge: 25
     }),
-    EffectsModule.forRoot([ProductEffect, OrderEffects]),
+    EffectsModule.forRoot([ProductEffect, OrderEffects, ]),
   ],
   providers: [],
   bootstrap: [AppComponent]

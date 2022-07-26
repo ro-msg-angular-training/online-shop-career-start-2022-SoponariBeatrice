@@ -17,7 +17,10 @@ import {
     getProductByIdSuccess,
     getProductByIdFailure,
     deleteProduct,
-    deleteProductSuccess
+    deleteProductSuccess,
+    updateProduct,
+    updateProductSuccess,
+    updateProductFailure
 }   from  '../actions/product.action'
 import { create } from "lodash";
 import { selectAllProducts } from "../selectors/product.selector";
@@ -31,16 +34,12 @@ export class ProductEffect {
     private store: Store<AppState>
   ) {}
 
-  // Run this code when a loadTodos action is dispatched
   loadProducts$ = createEffect(() =>{
     return  this.actions$.pipe(
     ofType(loadProducts),
     switchMap(() =>
-      // Call the getTodos method, convert it to an observable
       from(this.productService.getAllProducts()).pipe(
-        // Take the returned value and return a new success action containing the todos
         map((products) => loadProductsSuccess({ products: products })),
-        // Or... if it errors return a new failure action containing the error
         catchError((error) => of(loadProductsFailure({ error })))
       )
     )
@@ -71,4 +70,15 @@ export class ProductEffect {
     .pipe(map((product: IProduct) => deleteProductSuccess({product}))))
   ))
 
+  updateProduct$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(updateProduct),
+        switchMap((action) => from(this.productService.editProduct(action.product, action.id)
+          .pipe(map(() => action.product),
+            map((product: IProduct) => updateProductSuccess({product})),
+            catchError((error) => of(updateProductFailure({error})))
+          )))
+      )
+  );
 }

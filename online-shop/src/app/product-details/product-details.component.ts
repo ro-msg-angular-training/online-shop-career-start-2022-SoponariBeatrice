@@ -42,7 +42,7 @@ export class ProductDetailsComponent implements OnInit {
   productSubscriptions : Subscription[] = [];
   public product$ = this.store.select(selectOneProduct);
   public cart$ = this.storeCart.select(selectAllCart);
-  constructor(private route: ActivatedRoute, private  service: ProductService, private cartService : CartService, private store: Store<AppState>, private storeCart: Store<AppState>){ }
+  constructor(private route: ActivatedRoute, private store: Store<AppState>, private storeCart: Store<AppState>){ }
 
   ngOnInit() {
       this.id = this.route.snapshot.params['id'];

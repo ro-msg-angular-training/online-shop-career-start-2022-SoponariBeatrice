@@ -49,3 +49,17 @@ import { IProduct } from 'src/app/IProduct';
     '[API] Delete Product Success',
     props<{product: IProduct}>()
   )
+  export const updateProduct = createAction(
+    '[API] Update Product',
+    props<{ product: IProduct, id: number}>()
+  );
+  
+  export const updateProductSuccess = createAction(
+    '[IProduct] Update Product Success',
+    props<{ product: IProduct }>()
+  );
+  
+  export const updateProductFailure = createAction(
+    '[IProduct] Update Product Failure',
+    props<{ error : string }>()
+  );

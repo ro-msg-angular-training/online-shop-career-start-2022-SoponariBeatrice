@@ -19,7 +19,7 @@ import { checkout } from '../store/actions/cart.action';
 })
 export class CartComponent implements OnInit {
 
-  constructor(private cartService : CartService, private productService: ProductService, private store: Store<AppState>, private storeProduct: Store<AppState>, private storeOrder: Store<AppState>) { }
+  constructor(private store: Store<AppState>, private storeProduct: Store<AppState>, private storeOrder: Store<AppState>) { }
   cart: IProductWrapper[] = [];
   products: IProduct[]  = [];
   observableProducts: Observable<IProduct>[] = [];
@@ -44,7 +44,7 @@ export class CartComponent implements OnInit {
   }) 
 }
   placeOrder(){
-  // this.productSubscription = this.cartService.checkout().subscribe(() => alert("Order created successfully!"));
+ 
    this.storeOrder.dispatch(checkout())
     alert("Order created successfully!");
   }
